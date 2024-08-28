@@ -448,8 +448,45 @@ def main():
         # Verificar as mudanças]
         y = dados['BP']        
         
-        #y = dados['BP']
-        x = dados_normalizados_final   
+        with st.sidebar.expander("SMOTE", expanded=True):
+            
+            chkSmote = st.checkbox("SMOTE HABILITADO")
+            
+        x = dados_normalizados_final
+        
+        if chkSmote:
+                        
+            ######################################
+            # Supondo que X e y já foram definidos antes no código
+            # Aplicar SMOTE para balancear as classes
+            smote = SMOTE(random_state=42)
+            X_resampled, y_resampled = smote.fit_resample(x, y)
+
+            # Atualizando as variáveis X e y para os dados balanceados
+            x = X_resampled
+            y = y_resampled
+
+            # Aplicar normalização após o SMOTE
+            scaler = StandardScaler()
+            x = scaler.fit_transform(x)
+        
+
+        texto = """
+
+
+**Aplicação do SMOTE no Código**
+
+1. **Redução de Viés do Modelo**: Ao balancear as classes, o SMOTE ajuda a evitar que o modelo aprenda a priorizar a classe majoritária, o que poderia resultar em um desempenho fraco na identificação da classe minoritária. Isso é especialmente importante em problemas onde a classe minoritária tem uma importância crítica, como em diagnósticos médicos ou detecção de fraudes.
+
+2. **Melhoria na Performance**: Com um conjunto de dados mais balanceado, o modelo tem a oportunidade de aprender melhor as características das classes minoritárias, o que pode melhorar métricas de avaliação como a precisão, recall e F1-score.
+---
+
+    
+   
+        """
+        st.markdown(texto)
+        
+        ######################################
         
         dados_normalizados_final =  pd.concat([dados_normalizados_final, dados[['BP']]], axis=1)    
         
@@ -712,7 +749,7 @@ def main():
         
         # 2. Preparar as features (X) e a variável alvo (y)
         X = dados_normalizados_final.drop(columns=['BP'])  # Supondo que 'alvo' já foi criado anteriormente
-        y = dados_normalizados_final['BP']
+        #y = dados_normalizados_final['BP']
         st.write("Dimensões dos dados:")
         st.write(f"Features: {X.shape}")
         st.write(f"Variável Alvo: {y.shape}")
@@ -732,6 +769,38 @@ def main():
         st.write("Divisão dos dados:")
         st.write(f"Treinamento: {X_train.shape[0]} instâncias")
         st.write(f"Teste: {X_test.shape[0]} instâncias")
+                
+        # Contar a quantidade de 0s e 1s no conjunto de treino e teste
+        contagem_treino = y_train.value_counts()
+        contagem_teste = y_test.value_counts()
+
+        # Preparar os dados para o gráfico de barras
+        df_comparativo = pd.DataFrame({
+            'Conjunto': ['Treino', 'Treino', 'Teste', 'Teste'],
+            'Classe': ['0', '1', '0', '1'],
+            'Quantidade': [
+                contagem_treino.get(0, 0),  # Contagem de 0s no treino
+                contagem_treino.get(1, 0),  # Contagem de 1s no treino
+                contagem_teste.get(0, 0),   # Contagem de 0s no teste
+                contagem_teste.get(1, 0)    # Contagem de 1s no teste
+            ]
+        })
+
+        # Criar o gráfico de barras
+        fig, ax = plt.subplots(figsize=(5, 3))
+        bars = ax.bar(df_comparativo['Conjunto'] + ' - ' + df_comparativo['Classe'], df_comparativo['Quantidade'], color=['blue', 'orange', 'blue', 'orange'])
+        ax.set_title('Comparação da Quantidade de 0s e 1s nos Conjuntos de Treino e Teste')
+        ax.set_xlabel('Conjunto e Classe')
+        ax.set_ylabel('Quantidade')
+        plt.xticks(rotation=45)
+
+        # Adicionar os números em cima das barras
+        for bar in bars:
+            yval = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width()/2, yval + 0.05, int(yval), ha='center', va='bottom')
+
+        # Exibir o gráfico no Streamlit
+        st.pyplot(fig)
 
         # 4. Treinar o primeiro modelo: Naive Bayes
         st.write("## Modelo Naive Bayes")
@@ -912,7 +981,7 @@ Essa imagem é uma representação visual de uma **árvore de decisão** gerada 
     st.sidebar.markdown("**Rodrigo Mendes Peixoto**")
     st.sidebar.write("agosto de 2024")
     st.sidebar.markdown("*Disciplina: Mineração de Dados*")
-    st.sidebar.markdown("*Professores*: **Luciana Conceição Dias Campos, Heder Soares Bernardino**")
+    st.sidebar.markdown("*Professores*: **LUCIANA CONCEICAO DIAS CAMPOS, Heder Soares Bernardino**")
     st.sidebar.write("")
 
 # Executar a aplicação Streamlit
