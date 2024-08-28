@@ -8,3 +8,4 @@ numpy
 joblib
 scipy
 imblearn
+sklearn.cluster
