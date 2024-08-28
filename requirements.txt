@@ -8,3 +8,4 @@ numpy
 seaborn
 scikit-learn
 matplotlib
+plotly
