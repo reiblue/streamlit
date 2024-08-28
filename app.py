@@ -454,21 +454,7 @@ def main():
             
         x = dados_normalizados_final
         
-        if chkSmote:
-                        
-            ######################################
-            # Supondo que X e y já foram definidos antes no código
-            # Aplicar SMOTE para balancear as classes
-            smote = SMOTE(random_state=42)
-            X_resampled, y_resampled = smote.fit_resample(x, y)
-
-            # Atualizando as variáveis X e y para os dados balanceados
-            x = X_resampled
-            y = y_resampled
-
-            # Aplicar normalização após o SMOTE
-            scaler = StandardScaler()
-            x = scaler.fit_transform(x)
+        
         
 
         texto = """
@@ -595,7 +581,7 @@ def main():
         )
 
         # Dividir os dados em conjunto de treino e teste
-        X_train_smote, X_test,y_train_smote, y_test = train_test_split(x, y, test_size=valor_selecionado2, random_state=42, stratify=y)
+        X_train, X_test,y_train, y_test = train_test_split(x, y, test_size=valor_selecionado2, random_state=42, stratify=y)
 
         st.write("Quantidade e vizinho")
         valor_vizinho = st.slider(
@@ -609,7 +595,7 @@ def main():
         knn_model = KNeighborsClassifier(n_neighbors=valor_vizinho)  # Aqui k=3 é usado, mas pode ser ajustado
 
         # Treinar o modelo
-        knn_model.fit(X_train_smote, y_train_smote)
+        knn_model.fit(X_train, y_train)
 
         # Fazer previsões no conjunto de teste
         y_pred_knn = knn_model.predict(X_test)
@@ -647,7 +633,7 @@ def main():
         
         valor_raio = st.slider('Escolha o raio para o modelo', min_value=3.0, max_value=10.0, step=0.1, value=3.1)
         raio_modelo = RadiusNeighborsClassifier(radius=valor_raio)
-        raio_modelo.fit(X_train_smote, y_train_smote)
+        raio_modelo.fit(X_train, y_train)
 
         # Fazer previsões no conjunto de teste
         y_pred_raio = raio_modelo.predict(X_test)
@@ -670,32 +656,117 @@ def main():
         pca = PCA(n_components=2)
         X_test_pca = pca.fit_transform(X_test)
 
-        # Criar um DataFrame para facilitar a plotagem
-        pca_df = pd.DataFrame(X_test_pca, columns=['PC1', 'PC2'])
-        pca_df['Classe Real'] = y_test
-        pca_df['Classe Predita'] = y_pred_raio
+        ###############################################################
+        dados_normalizados_final.dropna(inplace=True)
+        dados_knn_r = dados_normalizados_final.copy()
 
-        # Plotar as classes com diferentes formas geométricas
-        st.write("### Gráfico PCA com Diferentes Formas para as Classes (Radius Neighbors)")
+        # Separar as features e o rótulo
+        X = dados_knn_r.drop(columns=['BP'])  # Features, sem a coluna is_BP
+        y = dados_knn_r['BP']  # Rótulo, que queremos prever
 
-        fig, ax = plt.subplots()
+        # Dividir os dados em conjunto de treino e teste
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=valor_selecionado2, random_state=42, stratify=y)
 
-        # Plotando as classes reais com diferentes formas
-        for classe, marker, color in zip([0, 1], ['s', '^'], ['blue', 'red']):
-            subset = pca_df[pca_df['Classe Real'] == classe]
-            ax.scatter(subset['PC1'], subset['PC2'], marker=marker, color=color, label=f'Classe {classe} Real')
+        # Aplicar o SMOTE para lidar com o desbalanceamento no conjunto de treinamento
+        if chkSmote:
+            smote = SMOTE(random_state=42)
+            X_train, y_train = smote.fit_resample(X_train, y_train)
 
-        # Plotando as classes preditas com diferentes formas
-        for classe, marker, color in zip([0, 1], ['o', 'v'], ['cyan', 'magenta']):
-            subset = pca_df[pca_df['Classe Predita'] == classe]
-            ax.scatter(subset['PC1'], subset['PC2'], marker=marker, facecolors='none', edgecolors=color, label=f'Classe {classe} Predita')
+        # Aplicar o PCA para reduzir a dimensionalidade, mantendo 95% da variância
+        pca = PCA(n_components=2)
+        X_train_pca = pca.fit_transform(X_train)
+        X_test_pca = pca.transform(X_test)
+        
+        valor_selecionado5 = st.slider(
+            'Gráfico train_test_split: % test_size ',
+            min_value=1.2,
+            max_value=10.0,
+            value=1.2,  # Valor inicial do slider
+            step=0.1    # Incremento de 0.1
+        )
 
-        ax.set_xlabel('Componente Principal 1')
-        ax.set_ylabel('Componente Principal 2')
-        ax.set_title('PCA: Comparação das Classes com Diferentes Formas (Radius Neighbors)')
-        ax.legend()
+        # Instanciar o modelo RadiusNeighborsClassifier com raio 1.2
+        radius_model = RadiusNeighborsClassifier(radius=valor_selecionado5)
+        radius_model.fit(X_train_pca, y_train)
 
-        st.pyplot(fig)
+        # Avaliar o modelo com os dados de teste
+        y_pred = radius_model.predict(X_test_pca)
+        
+        # Calcular a acurácia
+        acuracia = accuracy_score(y_test, y_pred)
+
+        # Gerar o relatório de classificação
+        report = classification_report(y_test, y_pred, output_dict=True)
+
+        # Converter o relatório de classificação em um DataFrame
+        df_report = pd.DataFrame(report).transpose()
+
+        # Remover linhas desnecessárias e ajustar a exibição para duas casas decimais
+        df_report = df_report.drop(['accuracy'], axis=0).round(2)
+
+        # Excluindo linhas que não são classes
+        df_report = df_report.drop([ 'macro avg', 'weighted avg'])
+
+        # Plotando a acurácia e o relatório de classificação como barplot
+        ax = df_report[['precision', 'recall', 'f1-score']].plot(kind='bar', figsize=(12, 6))
+        plt.title(f"Relatório de Classificação para RadiusNeighbors - Acurácia: {acuracia:.2%}")
+        plt.ylabel('Score')
+        plt.xlabel('Classes')
+        plt.ylim(0, 1)
+        plt.xticks(rotation=0)
+        plt.legend(loc='lower right')
+
+        # Mostrar os valores no topo de cada barra
+        for p in ax.patches:
+            ax.annotate(f'{p.get_height():.2f}', (p.get_x() + p.get_width() / 2., p.get_height()),
+                        ha='center', va='center', xytext=(0, 10), textcoords='offset points', fontsize=10)
+
+        plt.tight_layout()
+        plt.show()
+
+        # Criar um novo ponto nas features originais
+        novo_ponto = X.mean().values.reshape(1, -1)
+        novo_ponto[0, 0] = 40  # Configurando a primeira feature (x)
+        novo_ponto[0, 1] = -35  # Configurando a segunda feature (y)
+
+        # Transformar o novo ponto para o espaço PCA
+        novo_ponto_pca = pca.transform(novo_ponto)
+
+        # Prever a classe do novo ponto
+        yt = radius_model.predict(novo_ponto_pca)
+
+        # Encontrar os vizinhos dentro do raio de 1.2
+        distances, indices = radius_model.radius_neighbors(novo_ponto_pca)
+
+        # Mostrar o resultado da previsão
+        print(f"Novo ponto classificado como: {yt[0]}")
+
+        # Visualizar os componentes principais
+        plt.figure(figsize=(10, 6))
+
+        # Plotar os dados originais com marcadores específicos para cada classe
+        plt.scatter(X_train_pca[y_train == 0, 0], X_train_pca[y_train == 0, 1], c='blue', marker='o', label='Classe 0')
+        plt.scatter(X_train_pca[y_train == 1, 0], X_train_pca[y_train == 1, 1], c='green', marker='s', label='Classe 1')
+
+        # Adicionar os vizinhos mais próximos ao gráfico
+        if len(indices[0]) > 0:
+            plt.scatter(X_train_pca[indices[0], 0], X_train_pca[indices[0], 1], c='black', marker='x', s=100, label='Vizinhos no raio')
+
+        # Adicionar o novo ponto ao gráfico
+        if yt[0] == 0:
+            plt.scatter(novo_ponto_pca[0, 0], novo_ponto_pca[0, 1], c='red', marker='o', s=150, label='Novo ponto (Classe 0)')
+        else:
+            plt.scatter(novo_ponto_pca[0, 0], novo_ponto_pca[0, 1], c='red', marker='s', s=150, label='Novo ponto (Classe 1)')
+
+        plt.title('Visualização PCA com Novo Ponto e Vizinhos no Raio')
+        plt.xlabel('Componente Principal 1')
+        plt.ylabel('Componente Principal 2')
+        plt.legend()
+        st.pyplot(plt)
+        
+        
+        ################################################################
+
      
 
     st.subheader("")
@@ -769,6 +840,18 @@ def main():
         st.write("Divisão dos dados:")
         st.write(f"Treinamento: {X_train.shape[0]} instâncias")
         st.write(f"Teste: {X_test.shape[0]} instâncias")
+        
+        if chkSmote:                        
+            ######################################
+            # Supondo que X e y já foram definidos antes no código
+            # Aplicar SMOTE para balancear as classes
+            smote = SMOTE(random_state=42)
+            X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
+
+            # Atualizando as variáveis X e y para os dados balanceados
+            X_train = X_resampled
+            y_train = y_resampled
+
                 
         # Contar a quantidade de 0s e 1s no conjunto de treino e teste
         contagem_treino = y_train.value_counts()
