@@ -1034,22 +1034,6 @@ Essa imagem é uma representação visual de uma **árvore de decisão** gerada 
         else:
             st.write("**Ambos os modelos tiveram o mesmo desempenho em termos de acurácia.**")
             
-        st.info("Interpretação")
-        texto = """
-
-1   - As variáveis "MP" e "LP" desempenham um papel crucial na decisão de classificação dos candidatos. A árvore de decisão depende exclusivamente dessas variáveis para distinguir entre os candidatos "muito bons" e os outros.
-   - Isso pode sugerir que essas duas variáveis são altamente indicativas do sucesso ou das qualificações dos candidatos, e podem ser usadas para orientar futuras decisões de contratação ou triagem de candidatos.
-2. **Interpretação para a Gestão de Talentos**:
-   - A partir da análise, podemos inferir que candidatos com baixos valores em "MP" e "LP" têm uma maior probabilidade de serem considerados "muito bons". Isso pode guiar os recrutadores a focarem nesses atributos durante o processo de seleção para identificar talentos excepcionais.
-   - Por outro lado, candidatos com valores mais altos em "MP" e "LP" podem precisar de desenvolvimento adicional para serem considerados na mesma categoria.           
-3. - **Aplicação na Prática**: Com base nesse modelo, a equipe de recrutamento pode desenvolver estratégias mais eficazes para identificar e priorizar candidatos altamente qualificados, melhorando o processo de seleção e potencialmente aumentando a qualidade das contratações.
-        """
-        st.markdown(texto)
-
-        st.write("### Conclusão:")
-        st.write("O modelo com a maior acurácia é geralmente preferível, "
-                "mas é importante considerar outros fatores como interpretabilidade, "
-                "tempo de treinamento, e a natureza dos dados ao escolher o modelo mais adequado para uma aplicação específica.")
 
     
         
