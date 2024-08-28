@@ -448,56 +448,8 @@ def main():
         # Verificar as mudanças]
         y = dados['BP']        
         
-        with st.sidebar.expander("SMOTE"):
-            
-            chkSmote = st.checkbox("SMOTE HABILITADO")
-            
-        x = dados_normalizados_final
-        
-        if chkSmote:
-                        
-            ######################################
-            # Supondo que X e y já foram definidos antes no código
-            # Aplicar SMOTE para balancear as classes
-            smote = SMOTE(random_state=42)
-            X_resampled, y_resampled = smote.fit_resample(x, y)
-
-            # Atualizando as variáveis X e y para os dados balanceados
-            x = X_resampled
-            y = y_resampled
-
-            # Aplicar normalização após o SMOTE
-            scaler = StandardScaler()
-            x = scaler.fit_transform(x)
-        
-
-        texto = """
-
-
-**Aplicação do SMOTE no Código**
-
-No meu projeto, foi necessário lidar com um conjunto de dados desequilibrado, onde uma das classes estava significativamente sub-representada em comparação às outras. Para mitigar o impacto desse desequilíbrio na performance dos modelos de machine learning, apliquei a técnica SMOTE (Synthetic Minority Over-sampling Technique).
-
-O SMOTE foi utilizado após a divisão dos dados em variáveis dependentes (rótulos) e independentes, mas antes da normalização. A aplicação do SMOTE consiste em gerar novas amostras sintéticas da classe minoritária, equilibrando a quantidade de amostras entre as classes. Isso é feito através da interpolação de amostras existentes, criando novos dados que ajudam a evitar o viés dos modelos em favor da classe majoritária.
-
-Após o balanceamento com o SMOTE, os dados foram normalizados usando a técnica de `StandardScaler`, que ajusta os dados para que tenham média 0 e desvio padrão 1. A normalização foi realizada após o SMOTE para garantir que as amostras sintéticas fossem criadas no espaço original dos dados, mantendo as características originais das variáveis.
-
-**Benefícios da Aplicação do SMOTE**
-
-1. **Redução de Viés do Modelo**: Ao balancear as classes, o SMOTE ajuda a evitar que o modelo aprenda a priorizar a classe majoritária, o que poderia resultar em um desempenho fraco na identificação da classe minoritária. Isso é especialmente importante em problemas onde a classe minoritária tem uma importância crítica, como em diagnósticos médicos ou detecção de fraudes.
-
-2. **Melhoria na Performance**: Com um conjunto de dados mais balanceado, o modelo tem a oportunidade de aprender melhor as características das classes minoritárias, o que pode melhorar métricas de avaliação como a precisão, recall e F1-score.
-
-3. **Manutenção das Características Originais**: Como o SMOTE é aplicado antes da normalização, as novas amostras geradas mantêm as relações e distâncias no espaço original dos dados, preservando a integridade dos dados durante o processo de normalização posterior.
-
-Em resumo, a aplicação do SMOTE foi um passo crucial para garantir que o modelo desenvolvido seja capaz de identificar com precisão as instâncias de todas as classes, garantindo um desempenho robusto e confiável.
-
----
-   
-        """
-        st.markdown(texto)
-        
-        ######################################
+        #y = dados['BP']
+        x = dados_normalizados_final   
         
         dados_normalizados_final =  pd.concat([dados_normalizados_final, dados[['BP']]], axis=1)    
         
