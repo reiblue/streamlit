@@ -180,6 +180,7 @@ def main():
         
         st.write(head_md, expanded=True)
         st.write("QTD: ", len(linhas_com_md))
+        
     
         ####################################################
         coluna_alvo = 'PERFORMANCE'
@@ -367,7 +368,7 @@ def main():
 
         st.write(dados_reduzidos_final.head(), expanded=True)
         ###########################################################
-        from sklearn.cluster import MiniBatchKMeans
+        '''from sklearn.cluster import MiniBatchKMeans
         from sklearn.cluster import AgglomerativeClustering
         from sklearn.cluster import DBSCAN
         import matplotlib.pyplot as plt
@@ -377,7 +378,7 @@ def main():
             affinityAgglomerativeClustering = st.selectbox('affinity', ['euclidean','l1', 'l2', 'manhattan', 'cosine'])
 
         
-        '''# MiniBatchKMeans
+        # MiniBatchKMeans
         mb_kmeans = MiniBatchKMeans(n_clusters=4, batch_size=25)
         clusters_kmeans_n = mb_kmeans.fit_predict(dados_reduzidos_final)
         dados_reduzidos_final['Cluster_KMeans'] = clusters_kmeans_n
@@ -447,11 +448,59 @@ def main():
         # Verificar as mudanças]
         y = dados['BP']        
         
-        #y = dados['BP']
-        x = dados_normalizados_final   
+        with st.sidebar.expander("SMOTE"):
+            
+            chkSmote = st.checkbox("SMOTE HABILITADO")
+            
+        x = dados_normalizados_final
+        
+        if chkSmote:
+                        
+            ######################################
+            # Supondo que X e y já foram definidos antes no código
+            # Aplicar SMOTE para balancear as classes
+            smote = SMOTE(random_state=42)
+            X_resampled, y_resampled = smote.fit_resample(x, y)
+
+            # Atualizando as variáveis X e y para os dados balanceados
+            x = X_resampled
+            y = y_resampled
+
+            # Aplicar normalização após o SMOTE
+            scaler = StandardScaler()
+            x = scaler.fit_transform(x)
+        
+
+        texto = """
+
+
+**Aplicação do SMOTE no Código**
+
+No meu projeto, foi necessário lidar com um conjunto de dados desequilibrado, onde uma das classes estava significativamente sub-representada em comparação às outras. Para mitigar o impacto desse desequilíbrio na performance dos modelos de machine learning, apliquei a técnica SMOTE (Synthetic Minority Over-sampling Technique).
+
+O SMOTE foi utilizado após a divisão dos dados em variáveis dependentes (rótulos) e independentes, mas antes da normalização. A aplicação do SMOTE consiste em gerar novas amostras sintéticas da classe minoritária, equilibrando a quantidade de amostras entre as classes. Isso é feito através da interpolação de amostras existentes, criando novos dados que ajudam a evitar o viés dos modelos em favor da classe majoritária.
+
+Após o balanceamento com o SMOTE, os dados foram normalizados usando a técnica de `StandardScaler`, que ajusta os dados para que tenham média 0 e desvio padrão 1. A normalização foi realizada após o SMOTE para garantir que as amostras sintéticas fossem criadas no espaço original dos dados, mantendo as características originais das variáveis.
+
+**Benefícios da Aplicação do SMOTE**
+
+1. **Redução de Viés do Modelo**: Ao balancear as classes, o SMOTE ajuda a evitar que o modelo aprenda a priorizar a classe majoritária, o que poderia resultar em um desempenho fraco na identificação da classe minoritária. Isso é especialmente importante em problemas onde a classe minoritária tem uma importância crítica, como em diagnósticos médicos ou detecção de fraudes.
+
+2. **Melhoria na Performance**: Com um conjunto de dados mais balanceado, o modelo tem a oportunidade de aprender melhor as características das classes minoritárias, o que pode melhorar métricas de avaliação como a precisão, recall e F1-score.
+
+3. **Manutenção das Características Originais**: Como o SMOTE é aplicado antes da normalização, as novas amostras geradas mantêm as relações e distâncias no espaço original dos dados, preservando a integridade dos dados durante o processo de normalização posterior.
+
+Em resumo, a aplicação do SMOTE foi um passo crucial para garantir que o modelo desenvolvido seja capaz de identificar com precisão as instâncias de todas as classes, garantindo um desempenho robusto e confiável.
+
+---
+   
+        """
+        st.markdown(texto)
+        
+        ######################################
         
         dados_normalizados_final =  pd.concat([dados_normalizados_final, dados[['BP']]], axis=1)    
-                
+        
                 
         tudo = st.checkbox("Head", True)
         if not tudo :
@@ -461,9 +510,8 @@ def main():
         
     st.subheader('Trabalho 4. PCA')
     with st.expander('Visualizar os pontos classificados no espaço PCA', expanded=False):
-              
         
-
+        
         # Slider para escolher o número de componentes principais
         st.write("Quantidade e componentes")
         valor_pca = st.slider(
@@ -755,9 +803,41 @@ def main():
         ax_nb.set_ylabel("Classe Real")
         st.pyplot(fig_nb)
 
+        st.info("Parametros de poda")
+
+        max_depth = st.slider(
+            "Profundidade Máxima da Árvore (max_depth)", 
+            min_value=1, 
+            max_value=20, 
+            value=3, 
+            step=1
+        )
+
+        st.write("Define o número mínimo de amostras que um nó deve ter antes de ser dividido em subnós. Se um nó tem menos amostras do que o valor de min_samples_split, ele não será dividido.")
+        min_samples_split = st.slider(
+            "Número Mínimo de Amostras para Dividir um Nó (min_samples_split)", 
+            min_value=2, 
+            max_value=20, 
+            value=8, 
+            step=1
+        )
+
+        st.write("Define o número mínimo de amostras que um nó folha (nó final da árvore) deve conter. Se um nó folha tem menos amostras do que esse valor, ele não é considerado uma folha e a divisão não é realizada.")
+        min_samples_leaf = st.slider(
+            "Número Mínimo de Amostras em uma Folha (min_samples_leaf)", 
+            min_value=1, 
+            max_value=20, 
+            value=5, 
+            step=1
+        )
         # 5. Treinar o segundo modelo: Árvore de Decisão
         st.write("## Modelo Árvore de Decisão")
-        modelo_dt = DecisionTreeClassifier(random_state=42)
+        modelo_dt = DecisionTreeClassifier(
+            random_state=42,
+            max_depth=max_depth,  # Profundidade da árvore ajustada pelo slider
+            min_samples_split=min_samples_split,  # Min amostras para dividir ajustado pelo slider
+            min_samples_leaf=min_samples_leaf  # Min amostras em folha ajustado pelo slider
+        )
         modelo_dt.fit(X_train, y_train)
         y_pred_dt = modelo_dt.predict(X_test)
         
@@ -880,7 +960,7 @@ Essa imagem é uma representação visual de uma **árvore de decisão** gerada 
     st.sidebar.markdown("**Rodrigo Mendes Peixoto**")
     st.sidebar.write("agosto de 2024")
     st.sidebar.markdown("*Disciplina: Mineração de Dados*")
-    st.sidebar.markdown("*Professores*: **LUCIANA CONCEICAO DIAS CAMPOS, Heder Soares Bernardino**")
+    st.sidebar.markdown("*Professores*: **Luciana Conceição Dias Campos, Heder Soares Bernardino**")
     st.sidebar.write("")
 
 # Executar a aplicação Streamlit
