@@ -1,7 +1,7 @@
 streamlit
-scikit-learn
+scikit-learn==1.0.2
 pandas
-matplotlib
+matplotlib==3.5.1
 seaborn
 plotly
 numpy
