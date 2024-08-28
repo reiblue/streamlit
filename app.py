@@ -376,7 +376,8 @@ def main():
             linkageAgglomerativeClustering = st.selectbox('linkage', ['average','single', 'complete', 'ward'])
             affinityAgglomerativeClustering = st.selectbox('affinity', ['euclidean','l1', 'l2', 'manhattan', 'cosine'])
 
-        # MiniBatchKMeans
+        
+        '''# MiniBatchKMeans
         mb_kmeans = MiniBatchKMeans(n_clusters=4, batch_size=25)
         clusters_kmeans_n = mb_kmeans.fit_predict(dados_reduzidos_final)
         dados_reduzidos_final['Cluster_KMeans'] = clusters_kmeans_n
@@ -427,7 +428,7 @@ def main():
 
         # Ajustar layout e mostrar os gráficos
         plt.tight_layout()
-        st.pyplot(plt)
+        st.pyplot(plt)'''
            
     st.subheader('5.1. Montar modelos que separem as instâncias com BP das instâncias com MP e LP.')
     with st.expander("Separando as instâncias", expanded=True):
