@@ -1,7 +1,10 @@
-plotly
+streamlit
 scikit-learn
 pandas
 matplotlib
-scipy
+seaborn
+plotly
 numpy
-streamlit
+joblib
+scipy
+imblearn
