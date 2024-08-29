@@ -368,7 +368,7 @@ def main():
 
         st.write(dados_reduzidos_final.head(), expanded=True)
         ###########################################################
-        '''from sklearn.cluster import MiniBatchKMeans
+        from sklearn.cluster import MiniBatchKMeans
         from sklearn.cluster import AgglomerativeClustering
         from sklearn.cluster import DBSCAN
         import matplotlib.pyplot as plt
@@ -429,7 +429,7 @@ def main():
 
         # Ajustar layout e mostrar os gráficos
         plt.tight_layout()
-        st.pyplot(plt)'''
+        st.pyplot(plt)
            
     st.subheader('5.1. Montar modelos que separem as instâncias com BP das instâncias com MP e LP.')
     with st.expander("Separando as instâncias", expanded=True):
@@ -891,6 +891,7 @@ def main():
         modelo_nb.fit(X_train, y_train)
         y_pred_nb = modelo_nb.predict(X_test)
         
+        
         # Avaliar o modelo Naive Bayes
         acuracia_nb = accuracy_score(y_test, y_pred_nb)
         st.write(f"Acurácia do modelo Naive Bayes: {acuracia_nb:.2f}")
@@ -990,7 +991,22 @@ def main():
         
         st.pyplot(fig_tree)       
         
-        
+        importances = modelo_dt.feature_importances_
+        feature_names = X_train.columns  # Nomes das variáveis do conjunto de treino
+
+        # Ordenar as importâncias e os nomes das variáveis
+        indices = importances.argsort()[::-1]
+        sorted_feature_names = [feature_names[i] for i in indices]
+
+        # Criar o gráfico
+        plt.figure(figsize=(10, 10))
+        plt.title('Importância das Variáveis - Árvore de Decisão')
+        plt.barh(range(len(importances)), importances[indices], align='center')
+        plt.yticks(range(len(importances)), sorted_feature_names)
+        plt.xlabel('Importância Relativa')
+        plt.ylabel('Variáveis')
+        plt.gca().invert_yaxis()  # Variáveis mais importantes no topo
+        st.pyplot(plt)
         
         texto = """
 Essa imagem é uma representação visual de uma **árvore de decisão** gerada por um modelo de machine learning. As árvores de decisão são usadas para tomar decisões baseadas em uma série de perguntas, cada uma das quais divide os dados em subconjuntos menores até que uma decisão final seja tomada.
@@ -1034,8 +1050,44 @@ Essa imagem é uma representação visual de uma **árvore de decisão** gerada 
         else:
             st.write("**Ambos os modelos tiveram o mesmo desempenho em termos de acurácia.**")
             
+        from sklearn.metrics import roc_curve, auc
+        
+        y_pred_proba_nb = modelo_nb.predict_proba(X_test)[:, 1]  # Probabilidade da classe positiva
+        # ROC para Naive Bayes
+        fpr_nb, tpr_nb, _ = roc_curve(y_test, y_pred_proba_nb)
+        roc_auc_nb = auc(fpr_nb, tpr_nb)
 
-    
+        y_pred_proba_dt = modelo_dt.predict_proba(X_test)[:, 1]  # Probabilidade da classe positiva
+        # ROC para Árvore de Decisão
+        fpr_dt, tpr_dt, _ = roc_curve(y_test, y_pred_proba_dt)
+        roc_auc_dt = auc(fpr_dt, tpr_dt)
+        
+        # ROC para Naive Bayes
+        fpr_nb, tpr_nb, _ = roc_curve(y_test, y_pred_proba_nb)
+        roc_auc_nb = auc(fpr_nb, tpr_nb)
+
+        # ROC para Árvore de Decisão
+        fpr_dt, tpr_dt, _ = roc_curve(y_test, y_pred_proba_dt)
+        roc_auc_dt = auc(fpr_dt, tpr_dt)
+        
+        plt.figure()
+
+        # Curva ROC Naive Bayes
+        plt.plot(fpr_nb, tpr_nb, color='blue', lw=2, label=f'Naive Bayes (AUC = {roc_auc_nb:.2f})')
+
+        # Curva ROC Árvore de Decisão
+        plt.plot(fpr_dt, tpr_dt, color='green', lw=2, label=f'Árvore de Decisão (AUC = {roc_auc_dt:.2f})')
+
+        # Linha diagonal (referência para classificação aleatória)
+        plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.0])
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('Comparação das Curvas ROC')
+        plt.legend(loc='lower right')
+        st.pyplot(plt)
         
     # Espaçamento para empurrar o conteúdo para o rodapé
     st.sidebar.markdown(
@@ -1048,8 +1100,10 @@ Essa imagem é uma representação visual de uma **árvore de decisão** gerada 
     st.sidebar.markdown("**Rodrigo Mendes Peixoto**")
     st.sidebar.write("agosto de 2024")
     st.sidebar.markdown("*Disciplina: Mineração de Dados*")
-    st.sidebar.markdown("*Professores*: **LUCIANA CONCEICAO DIAS CAMPOS, Heder Soares Bernardino**")
+    st.sidebar.markdown("*Professores*: **Luciana Conceição Dias Campos, Heder Soares Bernardino**")
     st.sidebar.write("")
+    
+    
 
 # Executar a aplicação Streamlit
 if __name__ == '__main__':
