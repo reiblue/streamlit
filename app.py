@@ -386,7 +386,7 @@ def main():
         dados_com_performance['Cluster_KMeans'] = clusters_kmeans_n
 
         # Agglomerative Clustering
-        agglomerative = AgglomerativeClustering(n_clusters=4, linkage=linkageAgglomerativeClustering, affinity=affinityAgglomerativeClustering)
+        agglomerative = AgglomerativeClustering(n_clusters=4, linkage=linkageAgglomerativeClustering, metric=affinityAgglomerativeClustering)
         clusters_agglo_n = agglomerative.fit_predict(dados_reduzidos_final)
         dados_reduzidos_final['Cluster_Agglo'] = clusters_agglo_n
         dados_encoded['Cluster_Agglo'] = clusters_agglo_n
