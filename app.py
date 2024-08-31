@@ -48,6 +48,45 @@ def main():
         return f'background-color: {color}'
     
     st.title("Análise de Dados e Agrupamento de Candidatos a Emprego\nAtividade 5 - Classificação")
+    
+    def describe_column(column_name):
+        descriptions = {
+            "UNNAMED:0": "Índice gerado automaticamente que representa a posição da linha no dataset.",
+            "CANDIDATE_ID": "Um identificador exclusivo atribuído a cada candidato para diferenciá-los dentro do dataset.",
+            "NAME": "Nome do candidato, geralmente abreviado para manter a privacidade ou facilitar a análise.",
+            "NUMBER_OF_CHARACTERS_IN_ORIGINAL_NAME": "Número de caracteres que compõem o nome original completo do candidato.",
+            "MONTH_OF_BIRTH": "Mês em que o candidato nasceu, representado em formato abreviado (por exemplo, JAN para janeiro).",
+            "YEAR_OF_BIRTH": "Ano de nascimento do candidato, onde a notação 'Y7' e 'Y8' pode indicar um ano específico codificado ou um intervalo de anos.",
+            "GENDER": "Gênero do candidato, representado por uma letra (por exemplo, A, B), que pode estar codificada para indicar masculino, feminino ou outro.",
+            "STATE_LOCATION": "Estado ou região onde o candidato reside ou onde foi realizada a coleta de dados.",
+            "10TH_PERCENTAGE": "Percentual de notas que o candidato obteve no 10º ano escolar, possivelmente referente ao ensino médio.",
+            "12TH_PERCENTAGE": "Percentual de notas que o candidato obteve no 12º ano escolar, possivelmente referindo-se ao final do ensino médio ou equivalente.",
+            "10TH_COMPLETION_YEAR": "Ano em que o candidato concluiu o 10º ano escolar.",
+            "12TH_COMPLETION_YEAR": "Ano em que o candidato concluiu o 12º ano escolar.",
+            "DEGREE_OF_STUDY": "O grau de estudo alcançado pelo candidato, como bacharelado, licenciatura, etc.",
+            "SPECIALIZATION_IN_STUDY": "Especialização do candidato dentro de seu curso de graduação, como Engenharia, Ciências da Computação, etc.",
+            "COLLEGE_PERCENTAGE": "Percentual de notas obtidas pelo candidato durante seu curso universitário ou de graduação.",
+            "YEAR_OF_COMPLETION_OF_COLLEGE": "Ano em que o candidato concluiu sua graduação ou curso universitário.",
+            "ENGLISH_1": "Primeira avaliação das habilidades do candidato em Inglês, que pode medir compreensão, gramática ou outras competências.",
+            "ENGLISH_2": "Segunda avaliação das habilidades do candidato em Inglês.",
+            "ENGLISH_3": "Terceira avaliação das habilidades do candidato em Inglês.",
+            "ENGLISH_4": "Quarta avaliação das habilidades do candidato em Inglês.",
+            "QUANTITATIVE_ABILITY_1": "Primeira avaliação das habilidades quantitativas do candidato, que pode incluir matemática, raciocínio lógico, etc.",
+            "QUANTITATIVE_ABILITY_2": "Segunda avaliação das habilidades quantitativas do candidato.",
+            "QUANTITATIVE_ABILITY_3": "Terceira avaliação das habilidades quantitativas do candidato.",
+            "QUANTITATIVE_ABILITY_4": "Quarta avaliação das habilidades quantitativas do candidato.",
+            "DOMAIN_SKILLS_1": "Primeira avaliação das habilidades específicas do candidato em um determinado domínio ou área de conhecimento.",
+            "DOMAIN_SKILLS_2": "Segunda avaliação das habilidades específicas do candidato.",
+            "DOMAIN_TEST_3": "Terceira avaliação ou teste em um domínio específico, possivelmente uma área técnica ou de especialização.",
+            "DOMAIN_TEST_4": "Quarta avaliação ou teste em um domínio específico.",
+            "ANALYTICAL_SKILLS_1": "Primeira avaliação das habilidades analíticas do candidato, que pode incluir resolução de problemas, análise de dados, etc.",
+            "ANALYTICAL_SKILLS_2": "Segunda avaliação das habilidades analíticas do candidato.",
+            "ANALYTICAL_SKILLS_3": "Terceira avaliação das habilidades analíticas do candidato.",
+            "PERFORMANCE": "Indicador de desempenho geral do candidato, categorizado como 'BP', que pode representar 'Best Performance' ou um outro critério de desempenho específico."
+        }
+        
+        return descriptions.get(column_name, "Descrição não encontrada para esta coluna.")
+
         
 
     # Função para gerar o URL do Gravatar a partir do e-mail
@@ -764,6 +803,31 @@ def main():
         plt.legend()
         st.pyplot(plt)
         
+        from sklearn.inspection import permutation_importance
+        # Utilizar permutation importance para avaliar a importância das variáveis
+        # Utilizar permutation importance para avaliar a importância das variáveis
+        result = permutation_importance(knn_model, X_test, y_test, n_repeats=10, random_state=42)
+
+        # Obter as importâncias e os nomes das variáveis
+        importances = result.importances_mean
+        indices = importances.argsort()[::-1]
+
+        # Filtrar variáveis com importâncias negativas ou próximas de zero
+        positive_importance_indices = indices[importances[indices] > 0]
+        sorted_feature_names = [X_train.columns[i] for i in positive_importance_indices]
+
+        # Criar o gráfico de barras apenas com variáveis de importância positiva
+        plt.figure(figsize=(10, 8))
+        plt.barh(sorted_feature_names, importances[positive_importance_indices], align='center')
+        plt.xlabel('Importância relativa')
+        plt.title('Importância das Variáveis - KNN ')
+        plt.gca().invert_yaxis()  # Variáveis mais importantes no topo
+        plt.tight_layout()
+
+        # Exibir o gráfico no Streamlit
+        st.pyplot(plt)
+
+        
         
         ################################################################
 
@@ -815,7 +879,7 @@ def main():
         # Exibindo o gráfico no Streamlit
         st.pyplot(plt)
 
-    st.subheader("5.3. Comparação dos tipos de modelos devem ser gerados e comparados")
+    st.subheader("5.3. Comparativo Naive Bayes, Árvore de Decisão e Random Florest")
     with st.expander("", expanded=True):
         
         # 2. Preparar as features (X) e a variável alvo (y)
@@ -907,6 +971,29 @@ def main():
         ax_nb.set_xlabel("Classe Prevista")
         ax_nb.set_ylabel("Classe Real")
         st.pyplot(fig_nb)
+        
+        # Calcular a importância das variáveis usando permutation importance
+        result = permutation_importance(modelo_nb, X_test, y_test, n_repeats=10, random_state=42)
+
+        # Obter as importâncias e os nomes das variáveis
+        importances = result.importances_mean
+
+        # Filtrar para manter apenas importâncias positivas
+        positive_indices = np.where(importances > 0)[0]
+        positive_importances = importances[positive_indices]
+        sorted_indices = positive_importances.argsort()[::-1]
+        sorted_feature_names = [X_train.columns[i] for i in positive_indices[sorted_indices]]
+
+        # Criar o gráfico de importância das variáveis
+        plt.figure(figsize=(10, 8))
+        plt.barh(sorted_feature_names, positive_importances[sorted_indices], align='center')
+        plt.xlabel('Importância Relativa')
+        plt.title('Importância das Variáveis - GaussianNB')
+        plt.gca().invert_yaxis()  # Variáveis mais importantes no topo
+        plt.tight_layout()
+
+        # Exibir o gráfico no Streamlit
+        st.pyplot(plt)
 
         st.info("Parametros de poda")
 
@@ -914,7 +1001,7 @@ def main():
             "Profundidade Máxima da Árvore (max_depth)", 
             min_value=1, 
             max_value=20, 
-            value=3, 
+            value=8, 
             step=1
         )
 
@@ -923,7 +1010,7 @@ def main():
             "Número Mínimo de Amostras para Dividir um Nó (min_samples_split)", 
             min_value=2, 
             max_value=20, 
-            value=8, 
+            value=5, 
             step=1
         )
 
@@ -989,47 +1076,95 @@ def main():
         plot_tree(modelo_dt, max_depth=max_depth_visualizacao, filled=True, feature_names=X.columns, class_names=['MP_LP', 'BP'], rounded=True)
         
         
-        st.pyplot(fig_tree)       
+        st.pyplot(fig_tree) 
+        
+              
         
         importances = modelo_dt.feature_importances_
         feature_names = X_train.columns  # Nomes das variáveis do conjunto de treino
 
-        # Ordenar as importâncias e os nomes das variáveis
-        indices = importances.argsort()[::-1]
-        sorted_feature_names = [feature_names[i] for i in indices]
+        # Filtrar apenas as variáveis com importância positiva
+        positive_indices = np.where(importances > 0)[0]
+        positive_importances = importances[positive_indices]
+        positive_feature_names = feature_names[positive_indices]
+
+        # Ordenar as importâncias e os nomes das variáveis com importância positiva
+        sorted_indices = positive_importances.argsort()[::-1]
+        sorted_positive_importances = positive_importances[sorted_indices]
+        sorted_feature_names = [positive_feature_names[i] for i in sorted_indices]
 
         # Criar o gráfico
         plt.figure(figsize=(10, 10))
-        plt.title('Importância das Variáveis - Árvore de Decisão')
-        plt.barh(range(len(importances)), importances[indices], align='center')
-        plt.yticks(range(len(importances)), sorted_feature_names)
+        plt.title('Importância das Variáveis - Árvore de Decisão (Sem Importância Negativa)')
+        plt.barh(range(len(sorted_positive_importances)), sorted_positive_importances, align='center')
+        plt.yticks(range(len(sorted_positive_importances)), sorted_feature_names)
         plt.xlabel('Importância Relativa')
         plt.ylabel('Variáveis')
         plt.gca().invert_yaxis()  # Variáveis mais importantes no topo
         st.pyplot(plt)
         
-        texto = """
-Essa imagem é uma representação visual de uma **árvore de decisão** gerada por um modelo de machine learning. As árvores de decisão são usadas para tomar decisões baseadas em uma série de perguntas, cada uma das quais divide os dados em subconjuntos menores até que uma decisão final seja tomada.
+        from sklearn.ensemble import RandomForestClassifier
+        
+        st.info("Random Forest")
+        
+        max_depth2 = st.slider(
+            "Profundidade Máxima da Árvore (max_depth) ", 
+            min_value=1, 
+            max_value=20, 
+            value=8, 
+            step=1
+        )
 
-### Explicando a Árvore de Decisão:
+        st.write("Define o número mínimo de amostras que um nó deve ter antes de ser dividido em subnós. Se um nó tem menos amostras do que o valor de min_samples_split, ele não será dividido.")
+        min_samples_split2 = st.slider(
+            "Número Mínimo de Amostras para Dividir um Nó (min_samples_split) ", 
+            min_value=2, 
+            max_value=20, 
+            value=5, 
+            step=1
+        )
 
+        st.write("Define o número mínimo de amostras que um nó folha (nó final da árvore) deve conter. Se um nó folha tem menos amostras do que esse valor, ele não é considerado uma folha e a divisão não é realizada.")
+        min_samples_leaf2 = st.slider(
+            "Número Mínimo de Amostras em uma Folha (min_samples_leaf) ", 
+            min_value=1, 
+            max_value=20, 
+            value=5, 
+            step=1
+        )
+        
+        
+        # 7. Treinar o terceiro modelo: Random Forest
+        st.write("## Modelo Random Forest")
+        modelo_rf = RandomForestClassifier(
+            random_state=42,
+            max_depth=max_depth,  # Profundidade máxima das árvores na floresta
+            min_samples_split=min_samples_split,  # Min amostras para dividir ajustado pelo slider
+            min_samples_leaf=min_samples_leaf,  # Min amostras em folha ajustado pelo slider
+            n_estimators=100  # Número de árvores na floresta
+        )
+        modelo_rf.fit(X_train, y_train)
+        y_pred_rf = modelo_rf.predict(X_test)
 
-1. **Condições dos Nós**:
-   - **Raiz da Árvore (Nó Superior)**: A árvore começa com uma condição baseada na variável "MP". Se "MP" for menor ou igual a 0.5, a árvore se ramifica à esquerda; caso contrário, à direita.
-   - **Segundo Nível de Nós**:
-     - **Esquerda (LP <= 0.5)**: A condição verifica se "LP" é menor ou igual a 0.5 para as amostras que vieram do nó superior.
-     - **Direita (Gini = 0.0)**: Este nó é puro, com todas as amostras pertencendo à classe "MP_LP".
-     
-2. **Interpretação dos Caminhos**:
-   - **Caminho Esquerdo**: Se "MP <= 0.5" e "LP <= 0.5", as amostras são classificadas como "BP". Este caminho cobre a maior parte dos dados (166 amostras).
-   - **Caminho Direito**: Se "MP > 0.5" ou "LP > 0.5", as amostras são classificadas como "MP_LP". 
-        - **Esses caminhos levam a nós com "gini = 0.0", indicando uma classificação pura, onde todas as amostras são da mesma classe.
+        # Avaliar o modelo Random Forest
+        acuracia_rf = accuracy_score(y_test, y_pred_rf)
+        st.write(f"Acurácia do modelo Random Forest: {acuracia_rf:.2f}")
+        st.write("Relatório de Classificação (Random Forest):")
+        st.text(classification_report(y_test, y_pred_rf))
 
-3. **Significado das Cores**:
-   - **Azul**: Representa nós onde a classe majoritária é "BP".
-   - **Laranja**: Representa nós onde a classe majoritária é "MP_LP".
+        # Exibir a matriz de confusão para Random Forest
+        st.write("Matriz de Confusão (Random Forest):")
+        cm_rf = confusion_matrix(y_test, y_pred_rf)
+        fig_rf, ax_rf = plt.subplots()
+        sns.heatmap(cm_rf, annot=True, fmt="d", cmap="Blues", ax=ax_rf)
+        ax_rf.set_title("Matriz de Confusão - Random Forest")
+        ax_rf.set_xlabel("Classe Prevista")
+        ax_rf.set_ylabel("Classe Real")
+        st.pyplot(fig_rf)
+
        
-        """
+        
+        
         
         #st.markdown(texto)
         
@@ -1037,39 +1172,48 @@ Essa imagem é uma representação visual de uma **árvore de decisão** gerada 
     with st.expander("Conclusões e informação/interpretação dos dados ", expanded=True):
         
 
-        # Exibir o resumo comparativo
-        st.subheader("Resumo Comparativo dos Modelos")
+         # 8. Comparar os resultados dos três modelos
+        st.write("## Comparação de Acurácia")
+        st.write(f"Acurácia Naive Bayes: {acuracia_nb:.2f}")
+        st.write(f"Acurácia Árvore de Decisão: {acuracia_dt:.2f}")
+        st.write(f"Acurácia Random Forest: {acuracia_rf:.2f}")
 
-        st.write(f"Acurácia do Modelo Naive Bayes: **{acuracia_nb:.2f}**")
-        st.write(f"Acurácia do Modelo Árvore de Decisão: **{acuracia_dt:.2f}**")
-
-        if acuracia_nb > acuracia_dt:
-            st.write("**O modelo Naive Bayes apresentou melhor desempenho em termos de acurácia.**")
-        elif acuracia_dt > acuracia_nb:
-            st.write("**O modelo Árvore de Decisão apresentou melhor desempenho em termos de acurácia.**")
+        # Exibir o modelo com melhor desempenho
+        if acuracia_nb > acuracia_dt and acuracia_nb > acuracia_rf:
+            st.success("O modelo Naive Bayes teve melhor desempenho!")
+        elif acuracia_dt > acuracia_nb and acuracia_dt > acuracia_rf:
+            st.success("O modelo Árvore de Decisão teve melhor desempenho!")
+        elif acuracia_rf > acuracia_nb and acuracia_rf > acuracia_dt:
+            st.success("O modelo Random Forest teve melhor desempenho!")
         else:
-            st.write("**Ambos os modelos tiveram o mesmo desempenho em termos de acurácia.**")
+            st.info("Dois ou mais modelos tiveram o mesmo desempenho!")
             
         from sklearn.metrics import roc_curve, auc
         
+        y_pred_proba_knn = knn_model.predict_proba(X_test)[:, 1]  # Probabilidade da classe positiva
+        fpr_knn, tpr_knn, _ = roc_curve(y_test, y_pred_proba_knn)
+        roc_auc_knn = auc(fpr_knn, tpr_knn)
+        
+
+
+        
+        # 2. Obter as probabilidades previstas para a classe positiva
+        y_pred_proba_rf = modelo_rf.predict_proba(X_test)[:, 1]  # Probabilidade da classe positiva
+
+        # 3. Calcular a curva ROC e a AUC para o Random Forest
+        fpr_rf, tpr_rf, _ = roc_curve(y_test, y_pred_proba_rf)
+        roc_auc_rf = auc(fpr_rf, tpr_rf)
+
+        # 4. Repetir para Naive Bayes e Árvore de Decisão (já está no seu código)
         y_pred_proba_nb = modelo_nb.predict_proba(X_test)[:, 1]  # Probabilidade da classe positiva
-        # ROC para Naive Bayes
         fpr_nb, tpr_nb, _ = roc_curve(y_test, y_pred_proba_nb)
         roc_auc_nb = auc(fpr_nb, tpr_nb)
 
         y_pred_proba_dt = modelo_dt.predict_proba(X_test)[:, 1]  # Probabilidade da classe positiva
-        # ROC para Árvore de Decisão
         fpr_dt, tpr_dt, _ = roc_curve(y_test, y_pred_proba_dt)
         roc_auc_dt = auc(fpr_dt, tpr_dt)
-        
-        # ROC para Naive Bayes
-        fpr_nb, tpr_nb, _ = roc_curve(y_test, y_pred_proba_nb)
-        roc_auc_nb = auc(fpr_nb, tpr_nb)
 
-        # ROC para Árvore de Decisão
-        fpr_dt, tpr_dt, _ = roc_curve(y_test, y_pred_proba_dt)
-        roc_auc_dt = auc(fpr_dt, tpr_dt)
-        
+        # 5. Plotar as curvas ROC para todos os modelos
         plt.figure()
 
         # Curva ROC Naive Bayes
@@ -1077,6 +1221,12 @@ Essa imagem é uma representação visual de uma **árvore de decisão** gerada 
 
         # Curva ROC Árvore de Decisão
         plt.plot(fpr_dt, tpr_dt, color='green', lw=2, label=f'Árvore de Decisão (AUC = {roc_auc_dt:.2f})')
+
+        # Curva ROC Random Forest
+        plt.plot(fpr_rf, tpr_rf, color='red', lw=2, label=f'Random Forest (AUC = {roc_auc_rf:.2f})')
+        
+        # Curva ROC KNN
+        plt.plot(fpr_knn, tpr_knn, color='orange', lw=2, label=f'KNN (AUC = {roc_auc_knn:.2f})')
 
         # Linha diagonal (referência para classificação aleatória)
         plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
