@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 # Configuração inicial
 st.set_page_config(page_title="Reconhecimento de Dispositivos IoT", layout="wide")
@@ -7,6 +8,10 @@ st.set_page_config(page_title="Reconhecimento de Dispositivos IoT", layout="wide
 st.title("Reconhecimento de Dispositivos IoT Através da Análise de Tráfego de Rede")
 st.write("**Autor:** Rodrigo Mendes Peixoto | **Disciplina:** Mineração de Dados | **Data:** 03/09/2024")
 st.info("**Professores**: Luciana Conceição Dias Campos, Heder Soares Bernardino")
+
+dados = pd.read_csv('data/iot_device_train.csv')
+
+st.write(dados.head(), expander=True)
 
 # Slide 1: Introdução
 st.header("Introdução")
