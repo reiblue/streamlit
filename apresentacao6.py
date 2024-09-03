@@ -16,6 +16,8 @@ st.info("**Professores**: Luciana Conceição Dias Campos, Heder Soares Bernardi
 
 dados = pd.read_csv('data/iot_device_train.csv')
 
+
+
 st.header("Base de Dados")
 st.write("""
 - **Descrição:** Conjunto de dados de tráfego de rede coletado de dispositivos IoT.
