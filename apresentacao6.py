@@ -52,13 +52,6 @@ st.write("""
 - **Objetivo:** Desenvolver um modelo que consiga reconhecer dispositivos com alta precisão.
 """)
 
-# Slide 4: Metodologia
-st.header("Metodologia")
-st.write("""
-Foram testados vários algoritmos de machine learning, incluindo Random Forest, Decision Tree, e SVM. 
-O melhor desempenho foi alcançado pelo Random Forest, com uma acurácia de 99,9%.
-""")
-
 # Slide 5: Artigo de Referência
 st.header("Artigo de Referência")
 st.write("""
@@ -68,46 +61,60 @@ st.write("""
 """)
 st.markdown("[Link do artigo](https://ieeexplore-ieee-org.ez25.periodicos.capes.gov.br/abstract/document/8622243)")
 
-# Slide: Dispositivos IoT Utilizados
-st.subheader("Dispositivos IoT Utilizados")
+# Título
+st.title("Metodologia Proposta")
+
+# Introdução e Definição do Problema
+st.header("Introdução e Definição do Problema")
 st.write("""
-O estudo foi conduzido em uma rede experimental composta por cinco dispositivos IoT, incluindo uma câmera de segurança Nest, um sensor de movimento D-Link, uma lâmpada inteligente TP-Link e um plugue inteligente TP-Link, representando uma variedade de comportamentos de rede.
+- **Objetivo:** Desenvolver e validar um modelo de machine learning capaz de identificar dispositivos IoT com base em seus padrões de tráfego de rede, como proposto no artigo de referência.
+- **Problema:** O foco será na classificação de dispositivos IoT utilizando técnicas de análise de tráfego, com o objetivo de melhorar a segurança e a gestão de redes IoT.
 """)
 
-# Slide: Conjunto de Dados
-st.subheader("Conjunto de Dados")
+# Coleta de Dados
+st.header("Coleta de Dados")
 st.write("""
-Os dados foram coletados ao longo de sete dias, resultando em um conjunto de treino com 3.222 amostras e um conjunto de teste com 805 amostras, garantindo uma base robusta para a análise e validação dos modelos de classificação.
+- **Fonte dos Dados:** Serão utilizados dados de tráfego de rede coletados Kaggle.
+- **Descrição dos Dados:** Os dados incluirão atributos como tamanho dos pacotes, tempos de chegada entre pacotes, e características específicas de cada dispositivo, conforme descrito no artigo de referência.
 """)
 
-# Slide: Análise de Dados
-st.subheader("Análise de Dados")
+# Pré-processamento dos Dados
+st.header("Pré-processamento dos Dados")
 st.write("""
-A análise dos dados foi conduzida utilizando as bibliotecas scikit-learn e TensorFlow, permitindo a implementação eficiente de diversas técnicas de machine learning para a classificação dos dispositivos IoT com base nos padrões de tráfego de rede.
+- **Limpeza dos Dados:** Serão realizadas etapas de limpeza dos dados para remover inconsistências e tratar valores ausentes.
+- **Engenharia de Atributos:** Atributos relevantes serão extraídos e transformados, como proposto no artigo, para melhorar a capacidade discriminativa do modelo.
 """)
 
-# Slide: Dimensionalidade dos Dados
-st.subheader("Dimensionalidade dos Dados")
+# Redução de Dimensionalidade
+st.header("Redução de Dimensionalidade")
 st.write("""
-Cada fluxo de rede foi descrito por um vetor de 38 dimensões, incluindo características como o tamanho dos primeiros pacotes enviados e recebidos e os tempos de chegada entre esses pacotes, oferecendo uma visão detalhada dos comportamentos de rede dos dispositivos IoT.
+- **Aplicação do t-SNE:** A técnica t-SNE será utilizada para visualizar e reduzir a dimensionalidade dos dados, conforme descrito no artigo, permitindo uma melhor compreensão dos padrões de tráfego associados a cada dispositivo.
 """)
 
-# Slide: Redução de Dimensionalidade com T-SNE
-st.subheader("Redução de Dimensionalidade com T-SNE")
+# Modelagem
+st.header("Modelagem")
 st.write("""
-Para facilitar a visualização dos dados e explorar o poder discriminativo das características selecionadas, foi aplicada a técnica de redução de dimensionalidade t-SNE, que destacou a capacidade dos dados em diferenciar os diversos dispositivos IoT.
+- **Seleção de Modelos:** Serão testados vários algoritmos de machine learning, incluindo Random Forest, Decision Tree, SVM, k-Nearest Neighbors (KNN), Artificial Neural Networks (ANN), e Naïve Bayes.
 """)
 
-# Slide: Modelos de Classificação Utilizados
-st.subheader("Modelos de Classificação Utilizados")
+# Implementação de Segurança Avançada
+st.header("Calssificação de anomalias")
 st.write("""
-Foram testados seis algoritmos de classificação distintos: Random Forest, Decision Tree, SVM, k-Nearest Neighbors (KNN), Artificial Neural Network (ANN) e Naïve Bayes. O Random Forest apresentou o melhor desempenho, alcançando uma acurácia de 99,9% na classificação dos dispositivos IoT.
+- **Detecção de Anomalias:** Além da classificação, será explorada a implementação de mecanismos de detecção de anomalias para identificar comportamentos suspeitos nos dispositivos IoT em tempo real.
 """)
 
-# Slide 6: Base de Dados
-st.header("Base de Dados")
+# Resultados e Discussão
+st.header("Resultados e Discussão")
 st.write("""
-- **Descrição:** Conjunto de dados de tráfego de rede coletado de dispositivos IoT em uma rede doméstica.
+- **Análise dos Resultados:** Os resultados serão analisados em comparação com os achados do artigo de referência, destacando as melhorias e os desafios encontrados.
+- **Escalabilidade:** A viabilidade do modelo em redes maiores e mais complexas será discutida, propondo futuras extensões e ajustes necessários para sua aplicação em ambientes reais.
+""")
+
+# Conclusão
+st.header("Conclusão")
+st.write("""
+- **Resumo dos Achados:** A metodologia permitirá a criação de um modelo robusto para a identificação de dispositivos IoT, contribuindo para a segurança e a gestão de redes IoT.
+- **Trabalhos Futuros:** Sugestões serão feitas para melhorias e futuras pesquisas, incluindo a adaptação do modelo a diferentes tipos de redes e dispositivos IoT, além da integração com outras soluções de segurança.
 """)
 
 # Slide 7: Conclusão
