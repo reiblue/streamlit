@@ -48,8 +48,8 @@ st.write("""
 st.header("Definição do Problema")
 st.write("""
 - **Tipo de Problema:** Classificação dos dispositivos IoT com base em seus padrões de tráfego de rede.
-- **Atributos Disponíveis:** Tamanho dos pacotes, tempos de chegada entre pacotes, entre outros.
-- **Objetivo:** Desenvolver um modelo que consiga reconhecer dispositivos com alta precisão.
+- **Atributos Disponíveis:** Tamanho dos pacotes e tempos de chegada entre pacotes.
+- **Objetivo:** Desenvolver um modelo que consiga reconhecer dispositivos com precisão.
 """)
 
 # Slide 5: Artigo de Referência
