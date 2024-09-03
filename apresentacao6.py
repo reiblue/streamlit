@@ -2,12 +2,17 @@ import streamlit as st
 import pandas as pd
 
 # Configuração inicial
-st.set_page_config(page_title="Trabalho 6 - Luciana, Heder", layout="wide")
+st.set_page_config(page_title="Trabalho 6 - Definição do Problema - Mineração de Dados", layout="wide")
 
 # Título
 st.title("Trabalho 6 - Definição do Problema")
 st.write("**Autor:** Rodrigo Mendes Peixoto | **Disciplina:** Mineração de Dados | **Data:** 03/09/2024")
+st.markdown(""""
+            <img src="https://www2.ufjf.br/pgcc/wp-content/uploads/sites/181/2020/10/8200x1417-300x300.png" alt="Imagem da UFJF" width="5%">
+            [Programa de Pós-Graduação em Ciências da COmputação - UFJF](https://www2.ufjf.br/pgcc/)            
+            """, unsafe_allow_html=True)
 st.info("**Professores**: Luciana Conceição Dias Campos, Heder Soares Bernardino")
+
 
 dados = pd.read_csv('data/iot_device_train.csv')
 
