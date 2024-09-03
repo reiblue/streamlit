@@ -100,7 +100,7 @@ st.write("""
 # Implementação de Segurança Avançada
 st.header("Calssificação de anomalias")
 st.write("""
-- **Detecção de Anomalias:** Além da classificação, será explorada a implementação de mecanismos de detecção de anomalias para identificar comportamentos suspeitos nos dispositivos IoT em tempo real.
+- **Detecção de Anomalias:** Além da classificação, será explorada a implementação de mecanismos de detecção de anomalias para identificar comportamentos suspeitos nos dispositivos IoT.
 """)
 
 # Resultados e Discussão
