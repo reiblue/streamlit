@@ -11,8 +11,14 @@ st.info("**Professores**: Luciana Conceição Dias Campos, Heder Soares Bernardi
 
 dados = pd.read_csv('data/iot_device_train.csv')
 
+st.header("Base de Dados")
+st.write("""
+- **Descrição:** Conjunto de dados de tráfego de rede coletado de dispositivos IoT.
+- **Link:** [Acessar Conjunto de Dados no Kaggle](https://www.kaggle.com/datasets/fanbyprinciple/iot-device-identification/data)
+""")
+
 st.write(dados.head(), expander=True)
-infoRownsColumns = dados.shape[0] + " x " + dados.columns.shape[0]
+infoRownsColumns = str(dados.shape[0]) + " x " + str(dados.columns.shape[0])
 st.info(infoRownsColumns)
 
 # Slide 1: Introdução
