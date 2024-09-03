@@ -55,7 +55,7 @@ st.write("""
 # Slide 5: Artigo de Referência
 st.header("Artigo de Referência")
 st.write("""
-- **Título:** IoT Devices Recognition Through Network Traffic Analysis
+- **Título:** Reconhecimento de dispositivos IoT por meio de análise de tráfego de rede (IoT Devices Recognition Through Network Traffic Analysis)
 - **Autores:** Mustafizur R. Shahid, Gregory Blanc, Zonghua Zhang, Hervé Debar
 - **Fonte:** IEEE International Conference on Big Data, 2018
 """)

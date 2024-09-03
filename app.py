@@ -169,41 +169,7 @@ def main():
         colunas_com_md = dados.columns[dados.isin(['MD']).any()]
         linhas_com_md = dados[dados[colunas_com_md].isin(['MD']).any(axis=1)]
         
-        with st.popover('Código'):
-            st.write("Colunas com MD:", set(colunas_com_md))
-            st.code(''' 
-        coluna_alvo = 'PERFORMANCE'
-        X = dados.drop(columns=[coluna_alvo])  # Excluindo a coluna alvo
-        y = dados[coluna_alvo]
-        
-        X = pd.get_dummies(X, drop_first=True)
-
-        # Dividir o conjunto de dados em linhas com e sem NaN na coluna alvo
-        dados_completos = dados[dados[coluna_alvo].notna()]
-        dados_incompletos = dados[dados[coluna_alvo].isna()]
-
-        # Separar X e y para os dados completos
-        X_completos = X.loc[dados_completos.index]
-        y_completos = y.loc[dados_completos.index]
-
-        # Separar X para os dados incompletos (sem y, porque estamos prevendo)
-        X_incompletos = X.loc[dados_incompletos.index]
-
-        # Dividir os dados completos em treino e teste
-        X_train, X_test, y_train, y_test = train_test_split(X_completos, y_completos, test_size=0.2, random_state=42)
-
-        # Criar e treinar o modelo de árvore de decisão
-        modelo = DecisionTreeClassifier(random_state=42)
-        modelo.fit(X_train, y_train)
-
-        # Prever os valores faltantes nas linhas incompletas
-        y_pred = modelo.predict(X_incompletos)
-
-        # Substituir os valores NaN pelos valores previstos
-        dados.loc[dados[coluna_alvo].isna(), coluna_alvo] = y_pred
-        
-        acuracia = modelo.score(X_test, y_test) ''')
-              
+                     
         
         head_md = linhas_com_md[colunas_com_md].head(24)
         head_md = head_md.style.applymap(highlight_md)
