@@ -12,6 +12,7 @@ st.info("**Professores**: Luciana Conceição Dias Campos, Heder Soares Bernardi
 dados = pd.read_csv('data/iot_device_train.csv')
 
 st.write(dados.head(), expander=True)
+st.info(dados.shape[0] + " x " + dados.columns.shape[0])
 
 # Slide 1: Introdução
 st.header("Introdução")
