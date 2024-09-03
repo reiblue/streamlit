@@ -67,7 +67,7 @@ st.title("Metodologia Proposta")
 # Introdução e Definição do Problema
 st.header("Introdução e Definição do Problema")
 st.write("""
-- **Objetivo:** Desenvolver e validar um modelo de machine learning capaz de identificar dispositivos IoT com base em seus padrões de tráfego de rede, como proposto no artigo de referência.
+- **Objetivo:** Desenvolver e validar um modelo de capaz de identificar dispositivos IoT com base em seus padrões de tráfego de rede, como proposto no artigo de referência.
 - **Problema:** O foco será na classificação de dispositivos IoT utilizando técnicas de análise de tráfego, com o objetivo de melhorar a segurança e a gestão de redes IoT.
 """)
 
@@ -94,7 +94,7 @@ st.write("""
 # Modelagem
 st.header("Modelagem")
 st.write("""
-- **Seleção de Modelos:** Serão testados vários algoritmos de machine learning, incluindo Random Forest, Decision Tree, SVM, k-Nearest Neighbors (KNN), Artificial Neural Networks (ANN), e Naïve Bayes.
+- **Seleção de Modelos:** Serão testados vários algoritmos de incluindo Random Forest, Decision Tree, SVM, k-Nearest Neighbors (KNN), Artificial Neural Networks (ANN), e Naïve Bayes.
 """)
 
 # Implementação de Segurança Avançada
