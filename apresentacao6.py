@@ -66,7 +66,7 @@ st.write("""
 - **Autores:** Mustafizur R. Shahid, Gregory Blanc, Zonghua Zhang, Hervé Debar
 - **Fonte:** IEEE International Conference on Big Data, 2018
 """)
-st.markdown("[Link do artigo](https://ieeexplore-ieee-org.ez25.periodicos.capes.gov.br/abstract/document/8622243/authors#authors)")
+st.markdown("[Link do artigo](https://ieeexplore-ieee-org.ez25.periodicos.capes.gov.br/abstract/document/8622243)")
 
 # Slide: Dispositivos IoT Utilizados
 st.subheader("Dispositivos IoT Utilizados")
