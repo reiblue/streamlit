@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Configuração inicial
-st.set_page_config(page_title="Reconhecimento de Dispositivos IoT", layout="wide")
+st.set_page_config(page_title="Trabalho 6 - Luciana, Heder", layout="wide")
 
 # Título
 st.title("Trabalho 6 - Definição do Problema")
