@@ -60,6 +60,42 @@ st.write("""
 - **Fonte:** IEEE International Conference on Big Data, 2018
 """)
 
+# Slide: Dispositivos IoT Utilizados
+st.header("Dispositivos IoT Utilizados")
+st.write("""
+O estudo foi conduzido em uma rede experimental composta por cinco dispositivos IoT, incluindo uma câmera de segurança Nest, um sensor de movimento D-Link, uma lâmpada inteligente TP-Link e um plugue inteligente TP-Link, representando uma variedade de comportamentos de rede.
+""")
+
+# Slide: Conjunto de Dados
+st.header("Conjunto de Dados")
+st.write("""
+Os dados foram coletados ao longo de sete dias, resultando em um conjunto de treino com 3.222 amostras e um conjunto de teste com 805 amostras, garantindo uma base robusta para a análise e validação dos modelos de classificação.
+""")
+
+# Slide: Análise de Dados
+st.header("Análise de Dados")
+st.write("""
+A análise dos dados foi conduzida utilizando as bibliotecas scikit-learn e TensorFlow, permitindo a implementação eficiente de diversas técnicas de machine learning para a classificação dos dispositivos IoT com base nos padrões de tráfego de rede.
+""")
+
+# Slide: Dimensionalidade dos Dados
+st.header("Dimensionalidade dos Dados")
+st.write("""
+Cada fluxo de rede foi descrito por um vetor de 38 dimensões, incluindo características como o tamanho dos primeiros pacotes enviados e recebidos e os tempos de chegada entre esses pacotes, oferecendo uma visão detalhada dos comportamentos de rede dos dispositivos IoT.
+""")
+
+# Slide: Redução de Dimensionalidade com T-SNE
+st.header("Redução de Dimensionalidade com T-SNE")
+st.write("""
+Para facilitar a visualização dos dados e explorar o poder discriminativo das características selecionadas, foi aplicada a técnica de redução de dimensionalidade t-SNE, que destacou a capacidade dos dados em diferenciar os diversos dispositivos IoT.
+""")
+
+# Slide: Modelos de Classificação Utilizados
+st.header("Modelos de Classificação Utilizados")
+st.write("""
+Foram testados seis algoritmos de classificação distintos: Random Forest, Decision Tree, SVM, k-Nearest Neighbors (KNN), Artificial Neural Network (ANN) e Naïve Bayes. O Random Forest apresentou o melhor desempenho, alcançando uma acurácia de 99,9% na classificação dos dispositivos IoT.
+""")
+
 # Slide 6: Base de Dados
 st.header("Base de Dados")
 st.write("""
