@@ -32,6 +32,7 @@ import plotly.express as px
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.metrics import precision_score, recall_score, f1_score,  f1_score, classification_report
 from sklearn.neighbors import RadiusNeighborsClassifier
+from sklearn.inspection import permutation_importance
 
 
 # Função principal do Streamlit
@@ -474,7 +475,7 @@ def main():
     with st.expander("Separando as instâncias", expanded=True):
         
         st.write(set(dados["PERFORMANCE"].unique()))
-        st.info("Separação dos Grupos BP")
+        st.info("Separação dos Grupos BP e não BP")
         st.info("Deseja-se montar modelos que separem as instâncias com BP das instâncias com MP e LP.")
         
         # Criar uma nova coluna 'is_BP' que será 1 para BP e 0 para MP ou LP
@@ -572,7 +573,7 @@ def main():
         # Exibe o gráfico interativo no Streamlit
         st.plotly_chart(fig)
     
-    
+    knn_codigo = """
     st.subheader('5.2. KNN')
     with st.expander('knn', expanded=True):
         dados_novos = dados
@@ -803,7 +804,7 @@ def main():
         plt.legend()
         st.pyplot(plt)
         
-        from sklearn.inspection import permutation_importance
+        
         # Utilizar permutation importance para avaliar a importância das variáveis
         # Utilizar permutation importance para avaliar a importância das variáveis
         result = permutation_importance(knn_model, X_test, y_test, n_repeats=10, random_state=42)
@@ -830,7 +831,7 @@ def main():
         
         
         ################################################################
-
+"""
      
 
     st.subheader("")
@@ -948,6 +949,7 @@ def main():
 
         # Exibir o gráfico no Streamlit
         st.pyplot(fig)
+                
 
         # 4. Treinar o primeiro modelo: Naive Bayes
         st.write("## Modelo Naive Bayes")
@@ -1190,10 +1192,7 @@ def main():
             
         from sklearn.metrics import roc_curve, auc
         
-        y_pred_proba_knn = knn_model.predict_proba(X_test)[:, 1]  # Probabilidade da classe positiva
-        fpr_knn, tpr_knn, _ = roc_curve(y_test, y_pred_proba_knn)
-        roc_auc_knn = auc(fpr_knn, tpr_knn)
-        
+       
 
 
         
@@ -1225,9 +1224,7 @@ def main():
         # Curva ROC Random Forest
         plt.plot(fpr_rf, tpr_rf, color='red', lw=2, label=f'Random Forest (AUC = {roc_auc_rf:.2f})')
         
-        # Curva ROC KNN
-        plt.plot(fpr_knn, tpr_knn, color='orange', lw=2, label=f'KNN (AUC = {roc_auc_knn:.2f})')
-
+        
         # Linha diagonal (referência para classificação aleatória)
         plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
 
