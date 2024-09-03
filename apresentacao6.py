@@ -5,7 +5,7 @@ import pandas as pd
 st.set_page_config(page_title="Reconhecimento de Dispositivos IoT", layout="wide")
 
 # Título
-st.title("Reconhecimento de Dispositivos IoT Através da Análise de Tráfego de Rede")
+st.title("Trabalho 6 - Definição do Problema")
 st.write("**Autor:** Rodrigo Mendes Peixoto | **Disciplina:** Mineração de Dados | **Data:** 03/09/2024")
 st.info("**Professores**: Luciana Conceição Dias Campos, Heder Soares Bernardino")
 
@@ -33,7 +33,7 @@ garantindo uma proteção mais eficaz contra ameaças como ataques DDoS.
 st.header("Motivação")
 st.write("""
 - **Segurança:** A detecção precisa de dispositivos IoT é crucial para prevenir ataques, como DDoS, causados por dispositivos comprometidos.
-- **Disponibilidade:** Em setores críticos, como o de saúde, a disponibilidade dos dispositivos IoT é vital. Dispositivos como monitores cardíacos, bombas de insulina e outros equipamentos de suporte à vida precisam estar continuamente operacionais e protegidos contra falhas e invasões.
+- **Disponibilidade:** Em setores críticos, como o de saúde, a disponibilidade dos dispositivos IoT é vital. Dispositivos ligados a saúde precisam estar continuamente operacionais e protegidos contra falhas e invasões.
 - **Problema Atual:** Redes com uma grande variedade de dispositivos, incluindo os de saúde, exigem técnicas robustas de identificação para garantir tanto a segurança quanto a disponibilidade desses dispositivos, minimizando o risco de interrupções que poderiam comprometer a segurança do paciente.
 """)
 
@@ -59,39 +59,40 @@ st.write("""
 - **Autores:** Mustafizur R. Shahid, Gregory Blanc, Zonghua Zhang, Hervé Debar
 - **Fonte:** IEEE International Conference on Big Data, 2018
 """)
+st.markdown("[Link do artigo](https://ieeexplore-ieee-org.ez25.periodicos.capes.gov.br/abstract/document/8622243/authors#authors)")
 
 # Slide: Dispositivos IoT Utilizados
-st.header("Dispositivos IoT Utilizados")
+st.subheader("Dispositivos IoT Utilizados")
 st.write("""
 O estudo foi conduzido em uma rede experimental composta por cinco dispositivos IoT, incluindo uma câmera de segurança Nest, um sensor de movimento D-Link, uma lâmpada inteligente TP-Link e um plugue inteligente TP-Link, representando uma variedade de comportamentos de rede.
 """)
 
 # Slide: Conjunto de Dados
-st.header("Conjunto de Dados")
+st.subheader("Conjunto de Dados")
 st.write("""
 Os dados foram coletados ao longo de sete dias, resultando em um conjunto de treino com 3.222 amostras e um conjunto de teste com 805 amostras, garantindo uma base robusta para a análise e validação dos modelos de classificação.
 """)
 
 # Slide: Análise de Dados
-st.header("Análise de Dados")
+st.subheader("Análise de Dados")
 st.write("""
 A análise dos dados foi conduzida utilizando as bibliotecas scikit-learn e TensorFlow, permitindo a implementação eficiente de diversas técnicas de machine learning para a classificação dos dispositivos IoT com base nos padrões de tráfego de rede.
 """)
 
 # Slide: Dimensionalidade dos Dados
-st.header("Dimensionalidade dos Dados")
+st.subheader("Dimensionalidade dos Dados")
 st.write("""
 Cada fluxo de rede foi descrito por um vetor de 38 dimensões, incluindo características como o tamanho dos primeiros pacotes enviados e recebidos e os tempos de chegada entre esses pacotes, oferecendo uma visão detalhada dos comportamentos de rede dos dispositivos IoT.
 """)
 
 # Slide: Redução de Dimensionalidade com T-SNE
-st.header("Redução de Dimensionalidade com T-SNE")
+st.subheader("Redução de Dimensionalidade com T-SNE")
 st.write("""
 Para facilitar a visualização dos dados e explorar o poder discriminativo das características selecionadas, foi aplicada a técnica de redução de dimensionalidade t-SNE, que destacou a capacidade dos dados em diferenciar os diversos dispositivos IoT.
 """)
 
 # Slide: Modelos de Classificação Utilizados
-st.header("Modelos de Classificação Utilizados")
+st.subheader("Modelos de Classificação Utilizados")
 st.write("""
 Foram testados seis algoritmos de classificação distintos: Random Forest, Decision Tree, SVM, k-Nearest Neighbors (KNN), Artificial Neural Network (ANN) e Naïve Bayes. O Random Forest apresentou o melhor desempenho, alcançando uma acurácia de 99,9% na classificação dos dispositivos IoT.
 """)
@@ -100,7 +101,6 @@ Foram testados seis algoritmos de classificação distintos: Random Forest, Deci
 st.header("Base de Dados")
 st.write("""
 - **Descrição:** Conjunto de dados de tráfego de rede coletado de dispositivos IoT em uma rede doméstica.
-- **Link (opcional):** Incluir se aplicável
 """)
 
 # Slide 7: Conclusão
