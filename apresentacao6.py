@@ -119,5 +119,5 @@ Próximos passos incluem testar o modelo em redes maiores com mais dispositivos 
 
 # Slide 8: Agradecimentos e Perguntas
 st.header("Agradecimentos e Perguntas")
-st.write("Obrigado pela atenção! Estou aberto para perguntas.")
+st.write("Obrigado pela atenção!")
 
