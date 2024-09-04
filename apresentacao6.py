@@ -114,7 +114,7 @@ st.write(dados[["bytes", "bytes_A", "bytes_B", "bytes_A_B_ratio"]].head())
 # Implementação de Segurança Avançada
 st.header("Calssificação de anomalias")
 st.write("""
-- **Detecção de Anomalias:** Será explorada a implementação de mecanismos de detecção de anomalias para identificar comportamentos suspeitos nos dispositivos IoT.
+- **Detecção de Anomalias:** Classificação de pacotes com comportamentos suspeitos em dispositivos IoT.
 """)
 
 # Resultados e Discussão
