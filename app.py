@@ -1063,7 +1063,7 @@ def main():
 
         # Criar o gráfico
         plt.figure(figsize=(10, 10))
-        plt.title('Importância das Variáveis - Árvore de Decisão (Sem Importância Negativa)')
+        plt.title('Importância das Variáveis - Árvore de Decisão ')
         plt.barh(range(len(sorted_positive_importances)), sorted_positive_importances, align='center')
         plt.yticks(range(len(sorted_positive_importances)), sorted_feature_names)
         plt.xlabel('Importância Relativa')

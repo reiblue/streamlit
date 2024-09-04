@@ -6,7 +6,7 @@ st.set_page_config(page_title="Trabalho 6 - Definição do Problema - Mineraçã
 
 # Título
 st.title("Trabalho 6 - Definição do Problema")
-st.write("**Autor:** Rodrigo Mendes Peixoto | **Disciplina:** Mineração de Dados | **Data:** 03/09/2024")
+st.write("**Aluno:** Rodrigo Mendes Peixoto | **Disciplina:** Mineração de Dados | **Data:** 03/09/2024")
 st.markdown(""""
             <img src="https://www2.ufjf.br/pgcc/wp-content/uploads/sites/181/2020/10/8200x1417-300x300.png" alt="Imagem da UFJF" width="5%">
             [Programa de Pós-Graduação em Ciências da COmputação - UFJF](https://www2.ufjf.br/pgcc/)            
