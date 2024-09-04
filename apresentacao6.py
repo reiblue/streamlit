@@ -42,7 +42,6 @@ st.write("Espera-se que o número de dispositivos IoT atinja 75 bilhões até 20
 st.header("Motivação")
 st.write("""
 - **Segurança:** A detecção precisa de dispositivos IoT é crucial para prevenir ataques, como DDoS, causados por dispositivos comprometidos.
-- **Disponibilidade:** Em setores críticos, como o de saúde, a disponibilidade dos dispositivos IoT é vital. Dispositivos ligados a saúde precisam estar continuamente operacionais e protegidos contra falhas e invasões.
 - **Problema Atual:** Redes com uma grande variedade de dispositivos, incluindo os de saúde, exigem técnicas robustas de identificação para garantir tanto a segurança quanto a disponibilidade desses dispositivos, minimizando o risco de interrupções que poderiam comprometer a segurança do paciente.
 """)
 st.markdown("""
@@ -51,7 +50,6 @@ st.markdown("""
 - **Segurança através do reconhecimento de dispositivos**: Saber o tipo de dispositivo conectado à rede ajuda a proteger a rede.
 - **Riscos de ataques passivos**: Invasores podem identificar dispositivos vulneráveis por análise passiva do tráfego.
 - **Questões de privacidade**: O reconhecimento de dispositivos pode levantar preocupações relacionadas à privacidade.
-- **Definição de dispositivos IoT**: Dispositivos IoT realizam tarefas específicas, e seu tráfego de rede é previsível.
 """)
 
 # Slide 3: Definição do Problema
@@ -60,6 +58,8 @@ st.write("""
 - **Tipo de Problema:** Classificação dos dispositivos IoT com base em seus padrões de tráfego de rede para identificar anomalias.
 - **Atributos Disponíveis:** Tamanho dos pacotes e tempos de chegada entre pacotes.
 - **Objetivo:** Desenvolver um modelo que consiga reconhecer dispositivos com precisão.
+- **Definição de dispositivos IoT**: Dispositivos IoT realizam tarefas específicas, e seu tráfego de rede é previsível.
+
 """)
 
 # Slide 5: Artigo de Referência
@@ -78,19 +78,18 @@ st.title("Metodologia Proposta")
 st.header("Introdução e Definição do Problema")
 st.write("""
 - **Objetivo:** Desenvolver e validar um modelo de capaz de identificar dispositivos IoT com base em seus padrões de tráfego de rede, como proposto no artigo de referência.
-- **Problema:** O foco será na classificação de dispositivos IoT utilizando técnicas de análise de tráfego, com o objetivo de melhorar a segurança e a gestão de redes IoT.
+- **Problema:** O foco será na classificação de dispositivos IoT utilizando técnicas de análise de tráfego, com o objetivo de melhorar a segurança e a gestão de redes que possuem dispositivos IoT.
 """)
 
 st.markdown("""
 - **A proposta é** extrair dos **fluxos bidirecionais de dados**, como o **tamanho dos pacotes enviados e recebidos** e os **tempos de interchegada entre pacotes**.
-- **O modelo será capaz** de identificar dispositivos IoT, **mesmo quando o tráfego estiver criptografado**.
+- O modelo tentará identificar dispositivos IoT, **mesmo quando o tráfego estiver criptografado**.
 - Em vez de capturar sessões TCP completas, **a ideia é dividir** conexões longas em **fluxos menores**, permitindo a classificação dos dispositivos.            
             """)
 
 # Coleta de Dados
 st.header("Coleta de Dados")
 st.write("""
-- **Fonte dos Dados:** Serão utilizados dados de tráfego de rede coletados Kaggle.
 - **Descrição dos Dados:** Os dados incluirão atributos como tamanho dos pacotes, tempos de chegada entre pacotes, e características específicas de cada dispositivo, conforme descrito no artigo de referência.
 """)
 
@@ -114,7 +113,7 @@ st.write(dados[["bytes", "bytes_A", "bytes_B", "bytes_A_B_ratio"]].head())
 # Implementação de Segurança Avançada
 st.header("Calssificação de anomalias")
 st.write("""
-- **Detecção de Anomalias:** Além da classificação, será explorada a implementação de mecanismos de detecção de anomalias para identificar comportamentos suspeitos nos dispositivos IoT.
+- **Detecção de Anomalias:** Será explorada a implementação de mecanismos de detecção de anomalias para identificar comportamentos suspeitos nos dispositivos IoT.
 """)
 
 # Resultados e Discussão
@@ -127,7 +126,7 @@ st.write("""
 # Conclusão
 st.header("Conclusão")
 st.write("""
-- **Resumo dos Achados:** A metodologia permitirá a criação de um modelo robusto para a identificação de dispositivos IoT, contribuindo para a segurança e a gestão de redes IoT.
+- **Resumo dos Achados:** A metodologia permitirá a criação de um modelo para a identificação de anomalia do tráfego de rede em dispositivos IoT, contribuindo para a segurança e a gestão de redes.
 - **Trabalhos Futuros:** Sugestões serão feitas para melhorias e futuras pesquisas, incluindo a adaptação do modelo a diferentes tipos de redes e dispositivos IoT, além da integração com outras soluções de segurança.
 """)
 
