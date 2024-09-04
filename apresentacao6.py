@@ -35,6 +35,8 @@ A crescente adoção de dispositivos IoT apresenta desafios significativos para 
 Esta apresentação explora como a análise de tráfego de rede pode ser usada para identificar dispositivos IoT, 
 garantindo uma proteção mais eficaz contra ameaças como ataques DDoS.
 """)
+st.write("Espera-se que o número de dispositivos IoT atinja 75 bilhões até 2030, o que traz desafios para os administradores de rede.")
+
 
 # Slide 2: Motivação
 st.header("Motivação")
@@ -42,6 +44,14 @@ st.write("""
 - **Segurança:** A detecção precisa de dispositivos IoT é crucial para prevenir ataques, como DDoS, causados por dispositivos comprometidos.
 - **Disponibilidade:** Em setores críticos, como o de saúde, a disponibilidade dos dispositivos IoT é vital. Dispositivos ligados a saúde precisam estar continuamente operacionais e protegidos contra falhas e invasões.
 - **Problema Atual:** Redes com uma grande variedade de dispositivos, incluindo os de saúde, exigem técnicas robustas de identificação para garantir tanto a segurança quanto a disponibilidade desses dispositivos, minimizando o risco de interrupções que poderiam comprometer a segurança do paciente.
+""")
+st.markdown("""
+- **Reconhecimento de dispositivos IoT**: Identificar corretamente dispositivos é crucial para reforçar a segurança.
+- **Impacto do malware Mirai**: O malware infectou mais de 600.000 dispositivos, usados para ataques DDoS.
+- **Segurança através do reconhecimento de dispositivos**: Saber o tipo de dispositivo conectado à rede ajuda a proteger a rede.
+- **Riscos de ataques passivos**: Invasores podem identificar dispositivos vulneráveis por análise passiva do tráfego.
+- **Questões de privacidade**: O reconhecimento de dispositivos pode levantar preocupações relacionadas à privacidade.
+- **Definição de dispositivos IoT**: Dispositivos IoT realizam tarefas específicas, e seu tráfego de rede é previsível.
 """)
 
 # Slide 3: Definição do Problema
@@ -71,6 +81,12 @@ st.write("""
 - **Problema:** O foco será na classificação de dispositivos IoT utilizando técnicas de análise de tráfego, com o objetivo de melhorar a segurança e a gestão de redes IoT.
 """)
 
+st.markdown("""
+- **A proposta é** extrair dos **fluxos bidirecionais de dados**, como o **tamanho dos pacotes enviados e recebidos** e os **tempos de interchegada entre pacotes**.
+- **O modelo será capaz** de identificar dispositivos IoT, **mesmo quando o tráfego estiver criptografado**.
+- Em vez de capturar sessões TCP completas, **a ideia é dividir** conexões longas em **fluxos menores**, permitindo a classificação dos dispositivos.            
+            """)
+
 # Coleta de Dados
 st.header("Coleta de Dados")
 st.write("""
@@ -82,20 +98,18 @@ st.write("""
 st.header("Pré-processamento dos Dados")
 st.write("""
 - **Limpeza dos Dados:** Serão realizadas etapas de limpeza dos dados para remover inconsistências e tratar valores ausentes.
-- **Engenharia de Atributos:** Atributos relevantes serão extraídos e transformados, como proposto no artigo, para melhorar a capacidade discriminativa do modelo.
+- **Atributos:** Atributos relevantes serão extraídos e transformados, como proposto no artigo, para melhorar a capacidade discriminativa do modelo.
 """)
 
-# Redução de Dimensionalidade
-st.header("Redução de Dimensionalidade")
-st.write("""
-- **Aplicação do t-SNE:** A técnica t-SNE será utilizada para visualizar e reduzir a dimensionalidade dos dados, conforme descrito no artigo, permitindo uma melhor compreensão dos padrões de tráfego associados a cada dispositivo.
-""")
+st.markdown("""
+As seguintes features podem ser utilizadas para representar o tamanho dos pacotes:
+- **`bytes`**: Tamanho total dos pacotes.
+- **`bytes_A`**: Tamanho dos pacotes enviados.
+- **`bytes_B`**: Tamanho dos pacotes recebidos.
+- **`bytes_A_B_ratio`**: Relação entre pacotes enviados e recebidos.    
+        """)
+st.write(dados[["bytes", "bytes_A", "bytes_B", "bytes_A_B_ratio"]].head())
 
-# Modelagem
-st.header("Modelagem")
-st.write("""
-- **Seleção de Modelos:** Serão testados vários algoritmos de incluindo Random Forest, Decision Tree, SVM, k-Nearest Neighbors (KNN), Artificial Neural Networks (ANN), e Naïve Bayes.
-""")
 
 # Implementação de Segurança Avançada
 st.header("Calssificação de anomalias")
@@ -117,8 +131,6 @@ st.write("""
 - **Trabalhos Futuros:** Sugestões serão feitas para melhorias e futuras pesquisas, incluindo a adaptação do modelo a diferentes tipos de redes e dispositivos IoT, além da integração com outras soluções de segurança.
 """)
 
-# Slide 7: Conclusão
-st.header("Conclusão")
 st.write("""
 A identificação de dispositivos IoT é crítica para a segurança das redes, e a análise de tráfego oferece uma abordagem eficaz. 
 Próximos passos incluem testar o modelo em redes maiores com mais dispositivos IoT.
