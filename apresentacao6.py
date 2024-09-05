@@ -81,6 +81,7 @@ st.write("""
 - **Objetivo:** Desenvolver e validar um modelo de capaz de identificar dispositivos IoT com base em seus padrões de tráfego de rede, como proposto no artigo de referência.
 - **Problema:** O foco será na classificação de dispositivos IoT utilizando técnicas de análise de tráfego, com o objetivo de melhorar a segurança e a gestão de redes que possuem dispositivos IoT.
 """)
+st.write("Seis algoritmos de classificação diferentes foram testados no artigo: Random Forest, Decision Tree, SVM (com kernel rbf), k-Nearest Neighbors, Artificial Neural Network (ANN) e Gaussian Naïve Bayes")
 
 st.markdown("""
 - **A proposta é** extrair dos **fluxos bidirecionais de dados**, como o **tamanho dos pacotes enviados e recebidos** e os **tempos de interchegada entre pacotes**.
